@@ -20,5 +20,5 @@
 2. mint_price 公售價格
 3. lucky_prize 編號中獎獎金 
     (ex. 編號 44 倍數以及尾數是 444，額外贈送 44 U)
-4. critical 白單價格
+4. critical 爆擊率
 5. prize_prob 中獎機率
