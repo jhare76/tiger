@@ -27,6 +27,7 @@ if free_air_drop >= threshhold[0]:
     print("空投 & 門檻的比例不對！")
 
 phase = 0
+gift_phase = -1
 for i in range(1, 4445):
     if i <= threshhold[phase] and i > free_air_drop:
         profit[phase] += mint_price[phase]*ETH
@@ -36,6 +37,7 @@ for i in range(1, 4445):
             cost[phase] += gift[phase]
             cost[phase] += phase_gas_fee[phase]
             phase += 1
+    
     tmp_cost.append(sum(cost))
     tmp_profit.append(sum(profit))
 
