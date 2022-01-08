@@ -5,11 +5,14 @@
     ```json=1
     {
         "pre_sale_price": 0.044,
-        "mint_price": 0.06,
+        "mint_price": 0.08,
         "lucky_prize": 44,
-        "critical": 10,
-        "prize_prob": 0.05,
-        "eth_usdt": 3500
+        "critical": 4,
+        "prize_prob": 0.1,
+        "eth_usdt": 3500,
+        "threshold": [743, 1443, 2443, 3443, 4887],
+        "total": 4888,
+        "free_air_drop": 300
     }
     ```
 2. 到 `main.py` 找到 `config_name = 'critical.json' # 改名字`，並且改成新的 json 檔名
@@ -22,3 +25,7 @@
     (ex. 編號 44 倍數以及尾數是 444，額外贈送 44 U)
 4. critical 爆擊率
 5. prize_prob 中獎機率
+6. eth_usdt: 兌換價格
+7. threshold: 門檻設置，這邊要將門檻值減一 (假如捲軸編號是 1~4888，門檻是 744，那麼這邊要寫 743)
+8. total: 總發行量
+9. free_air_drop: 空投給虎友或其他的人的福利品
