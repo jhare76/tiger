@@ -4,7 +4,7 @@ import numpy as np
 import math 
 import json
 
-config_name = 'critical.json' # 改名字
+config_name = 'recommend.json' # 改名字
 config = open(config_name)
 config = json.load(config)
 
@@ -14,6 +14,7 @@ profits = []
 
 ## 參數設定
 ETH = config["eth_usdt"]
+total = config["total"]
 
 ## 獲利參數
 pre_sale_price = config["pre_sale_price"]
@@ -21,13 +22,13 @@ mint_price = config["mint_price"]
 mint_price_phase = [pre_sale_price, mint_price, mint_price, mint_price, mint_price] # eth
 
 ## 成本參數
-free_air_drop = 270 # 空投給虎友
+free_air_drop = config["free_air_drop"] # 空投給虎友
 lucky_prize = config["lucky_prize"] # U
 
 cirtical = config["critical"]
 prize_prob = config["prize_prob"]
 
-threshhold = [643, 1443, 2443, 3443, 4443]
+threshhold = config["threshold"]
 prize_prob_phase = [0.04, prize_prob, prize_prob, prize_prob, prize_prob, prize_prob]
 prize = mint_price*cirtical*ETH # 獎金是 x 倍 mint 價格暴擊
 phase_bonus = [0, 0, 0, 0, 59718] # 特斯拉
@@ -46,9 +47,11 @@ def calc_lucky_prize(i):
         return lucky_prize  
     else:
         return 0
-
-for i in range(0, 4444):
-    tmp_cost = 0
+lucky_prize_accumulate = 0
+bonus_accumulate = 0
+ctr = 0
+for i in range(0, total):
+    prize_cost = 0
     if i < free_air_drop:
         tmp_profit = 0
     else:
@@ -57,14 +60,17 @@ for i in range(0, 4444):
             bonus += phase_bonus[phase] # 達到門檻，額外送多少獎金
             phase += 1
         prize_ctr = math.floor(prize_prob_phase[phase]*i) # 配合不同階段期望值，算出目前要送出多少包獎金
-        tmp_cost = prize_ctr*prize
-    tmp_cost += calc_lucky_prize(i)
-    tmp_cost += bonus
-    costs.append(tmp_cost)
-    profits.append(tmp_profit)
+        prize_cost = prize_ctr*prize
     
-x = np.arange(0, 4444, 1)
+    lucky_prize_accumulate += calc_lucky_prize(i)
+    if calc_lucky_prize(i) > 0:
+        ctr += 1
+    bonus_accumulate += bonus
+    prize_cost += (lucky_prize_accumulate + bonus_accumulate)
 
+    costs.append(prize_cost)
+    profits.append(tmp_profit)
+x = np.arange(0, total, 1)
 # 淨值計算
 net_value = []
 show_target_idx = False
@@ -76,7 +82,7 @@ result["max_profit"] = {"id":-1, "value":0}
 
 threshhold_net = []
 net_ratio = []
-for i in range(4444):
+for i in range(total):
     tmp_net_value = (profits[i] - costs[i])/ETH
     if tmp_net_value < 0: # 找出最大虧損點
         profit_index = i+1
@@ -121,17 +127,17 @@ for p in range(PHASE_COUNT):
 idx = 1
 tmp_phase = 0 # 0~5
 
+plt.xlabel('Mint 捲軸數目', fontsize=20)
+plt.ylabel('虎群獲利', fontsize=20)
 print("第 {0} 包之前，都是虧錢".format(result["at_least"]))
 print("{2:>5}: {0:>10} ETH / 在第 {1} 包".format(result["max_loss"]["value"], result["max_loss"]["id"]+1, "最大虧損"))
 print("{2:>5}: {0:>10} ETH / 在第 {1} 包".format(result["max_profit"]["value"], result["max_profit"]["id"]+1, "最大收益"))
-print("{2:>5}: {1:>10.2f} ETH".format(4444, result["sold_out"], "全部完售"))
+print("{2:>5}: {1:>10.2f} ETH".format(total, result["sold_out"], "全部完售"))
 
 fig1, ax1 = plt.subplots()
 ax1.set_ylabel('虎群獲利百分比 (淨收入 / 收入)')
 ax1.plot(x, net_ratio)
 
-plt.xlabel('Mint 捲軸數目', fontsize=20)
-plt.ylabel('虎群獲利', fontsize=20)
 plt.title(config_name)
 plt.legend()
 plt.show()

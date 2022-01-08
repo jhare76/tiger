@@ -1,0 +1,11 @@
+{
+    "pre_sale_price": 0.044,
+    "mint_price": 0.08,
+    "lucky_prize": 44,
+    "critical": 4,
+    "prize_prob": 0.1,
+    "eth_usdt": 3500,
+    "threshold": [743, 1443, 2443, 3443, 4887],
+    "total": 4888,
+    "free_air_drop": 300
+}

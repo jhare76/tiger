@@ -3,5 +3,9 @@
     "mint_price": 0.04,
     "lucky_prize": 44,
     "critical": 4,
-    "prize_prob": 0.1
+    "prize_prob": 0.1,
+    "eth_usdt": 3500,
+    "threshold": [643, 1443, 2443, 3443, 4443],
+    "total": 4444,
+    "free_air_drop": 270
 }

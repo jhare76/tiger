@@ -4,5 +4,8 @@
     "lucky_prize": 44,
     "critical": 10,
     "prize_prob": 0.05,
-    "eth_usdt": 3500
+    "eth_usdt": 3500,
+    "threshold": [643, 1443, 2443, 3443, 4443],
+    "total": 4444,
+    "free_air_drop": 270
 }
